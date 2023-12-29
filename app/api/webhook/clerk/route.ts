@@ -33,7 +33,6 @@ type Event = {
   object: "event";
   type: EventType;
 };
-
 export const POST = async (request: Request) => {
   const payload = await request.json();
   const header = headers();
