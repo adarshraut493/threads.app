@@ -1,19 +1,23 @@
 import AccountProfile from "@/components/forms/AccountProfile";
+import { fetchUser } from "@/lib/actions/user.action";
 import { currentUser } from "@clerk/nextjs"; // To get data about the current user 
+import { redirect } from "next/navigation";
 
 
 async function Page() {
     const user = await currentUser();
+    if (!user) return null;
 
-    const userInfo = {};
+    const userInfo = await fetchUser(user.id);
+    if (userInfo?.onboarded) redirect('/')
 
     const userData = {
         id: user?.id,           // will come from above userinfo an user  , it is the actual id of the user 
         objectId: userInfo?._id,     //and ? means to check if it exist//  it COME FROM DATABASE
-        username: userInfo?.username || user?.username,
-        name: userInfo?.name || user?.firstName || "",
-        bio: userInfo.name || "",
-        image: userInfo?.image || user?.imageUrl,
+        username: userInfo ? userInfo?.username : user?.username,
+        name: userInfo ? userInfo?.name : user?.firstName || "",
+        bio: userInfo ? userInfo.bio : "",
+        image: userInfo ? userInfo?.image : user?.imageUrl,
     }
 
     return (
@@ -24,7 +28,7 @@ async function Page() {
             </p>
             <section className="mt-9 bg-dark-2 p-10">
                 <AccountProfile
-                    user={userData} btnTitle="Continue"/>
+                    user={userData} btnTitle="Continue" />
             </section>
 
         </main>

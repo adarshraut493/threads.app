@@ -28,6 +28,7 @@ interface Props {
 function PostThread({ userId }: Props) {
   const router = useRouter();
   const pathname = usePathname();
+  
 
   const { organization } = useOrganization();
 
@@ -41,6 +42,7 @@ function PostThread({ userId }: Props) {
   });
 
   const onSubmit = async (values: z.infer<typeof ThreadValidation>) => {
+   
     await createThread({
       text: values.thread,
       author: userId,

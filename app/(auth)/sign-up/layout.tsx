@@ -15,7 +15,7 @@ export default function Rootlayout({
     children: React.ReactNode
 }) {
     return (
-        <ClerkProvider>
+        // <ClerkProvider>
             <html lang="en">
                 <body className={`${inter.className} bg-dark-1`}>
                     {children}
@@ -23,6 +23,6 @@ export default function Rootlayout({
                 </body>
 
             </html>
-        </ClerkProvider>
+        // </ClerkProvider>
     )
 }
