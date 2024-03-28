@@ -1,3 +1,4 @@
+// this is used to update user data in the mongodb users.
 "use server";
 
 import { FilterQuery, SortOrder } from "mongoose";
@@ -9,7 +10,7 @@ import User from "../models/user.model";
 
 import { connectToDB } from "../mongoose";
 
-export async function fetchUser(userId: string) {
+export async function fetchUser(userId: string) {  //Exporting user from the database 
   try {
     connectToDB();
 
@@ -51,17 +52,19 @@ export async function updateUser({
         image,
         onboarded: true,
       },
-      { upsert: true }
+      { upsert: true } //means both update and insert , in relation database update existing row if specified value already exist in a table and insert a new row if value specified not already exist .
     );
 
     if (path === "/profile/edit") {
-      revalidatePath(path);
+      revalidatePath(path); //next.js function revalidate data assocaited with path.
+      //  update cache data without waiting for validation to expire. or here changes happen immediately.
     }
   } catch (error: any) {
     throw new Error(`Failed to create/update user: ${error.message}`);
   }
 }
 
+//for tabs in profile option 
 export async function fetchUserPosts(userId: string) {
   try {
     connectToDB();
@@ -94,16 +97,17 @@ export async function fetchUserPosts(userId: string) {
   }
 }
 
+// for ssearching of profile or user.
 // Almost similar to Thead (search + pagination) and Community (search + pagination)
 export async function fetchUsers({
   userId,
   searchString = "",
   pageNumber = 1,
   pageSize = 20,
-  sortBy = "desc",
+  sortBy = "desc",    //decending order
 }: {
-  userId: string;
-  searchString?: string;
+  userId: string;         // defining 
+  searchString?: string;    // ? means it is an optional .
   pageNumber?: number;
   pageSize?: number;
   sortBy?: SortOrder;
@@ -121,7 +125,8 @@ export async function fetchUsers({
     const query: FilterQuery<typeof User> = {
       id: { $ne: userId }, // Exclude the current user from the results.
     };
-
+      
+    //for searching 
     // If the search string is not empty, add the $or operator to match either username or name fields.
     if (searchString.trim() !== "") {
       query.$or = [
@@ -153,6 +158,7 @@ export async function fetchUsers({
   }
 }
 
+// for activity and notification . 
 export async function getActivity(userId: string) {
   try {
     connectToDB();
@@ -161,8 +167,8 @@ export async function getActivity(userId: string) {
     const userThreads = await Thread.find({ author: userId });
 
     // Collect all the child thread ids (replies) from the 'children' field of each user thread
-    const childThreadIds = userThreads.reduce((acc, userThread) => {
-      return acc.concat(userThread.children);
+    const childThreadIds = userThreads.reduce((acc, userThread) => {        //Works as a ForEach loop or map function .  
+      return acc.concat(userThread.children);// userthreads is an array of threads each have a children prop which are comments and concatenate them. 
     }, []);
 
     // Find and return the child threads (replies) excluding the ones created by the same user

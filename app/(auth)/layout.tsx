@@ -5,7 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 
 import "../globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"] }); // import google fonts 
 
 export const metadata: Metadata = {
   title: "Auth",
@@ -19,10 +19,14 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider
-      
     >
       <html lang='en'>
-        <body className={`${inter.className} bg-dark-1`}>{children}</body>
+        <body className={`${inter.className} bg-dark-1`}>
+          <div className="w-full flex justify-center items-center min-h-screen">
+            {children}
+          </div>
+        </body>
+        {/* templete literals provide latin font to children*/}
       </html>
     </ClerkProvider>
   );

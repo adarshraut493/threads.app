@@ -1,3 +1,4 @@
+//this is used for how the data will be saved in mongoDB community.
 import mongoose from "mongoose";
 
 const communitySchema = new mongoose.Schema({

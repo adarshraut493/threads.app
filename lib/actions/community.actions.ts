@@ -1,3 +1,4 @@
+// this is used to update user data in the mongodb users.
 "use server";
 
 import { FilterQuery, SortOrder } from "mongoose";
@@ -26,6 +27,7 @@ export async function createCommunity(
       throw new Error("User not found"); // Handle the case if the user with the id is not found
     }
 
+    // create communities.
     const newCommunity = new Community({
       id,
       name,

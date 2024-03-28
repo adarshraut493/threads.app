@@ -1,11 +1,11 @@
+// for search of profile.
 import { redirect } from "next/navigation";
 import { currentUser } from "@clerk/nextjs";
-
 import UserCard from "@/components/cards/UserCard";
 import Searchbar from "@/components/shared/Searchbar";
 import Pagination from "@/components/shared/Pagination";
-
 import { fetchUser, fetchUsers } from "@/lib/actions/user.actions";
+
 
 async function Page({
   searchParams,
@@ -18,7 +18,7 @@ async function Page({
   const userInfo = await fetchUser(user.id);
   if (!userInfo?.onboarded) redirect("/onboarding");
 
-  const result = await fetchUsers({
+  const result = await fetchUsers({       // coming from lib action user.action . 
     userId: user.id,
     searchString: searchParams.q,
     pageNumber: searchParams?.page ? +searchParams.page : 1,

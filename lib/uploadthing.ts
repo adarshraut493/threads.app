@@ -1,3 +1,4 @@
+// to upload after we press submit in onboarding to monogoose
 // Resource: https://docs.uploadthing.com/api-reference/react#generatereacthelpers
 // Copy paste (be careful with imports)
 

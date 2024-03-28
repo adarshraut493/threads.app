@@ -1,5 +1,6 @@
+// for onborading logic we Submit,  zodResolver(UserValidation ,updateUser.
 "use client";
-
+// shadcn for form 
 import * as z from "zod";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
@@ -18,10 +19,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-
 import { useUploadThing } from "@/lib/uploadthing";
 import { isBase64Image } from "@/lib/utils";
-
 import { UserValidation } from "@/lib/validations/user";
 import { updateUser } from "@/lib/actions/user.actions";
 
@@ -42,10 +41,10 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
   const pathname = usePathname();
   const { startUpload } = useUploadThing("media");
 
-  const [files, setFiles] = useState<File[]>([]);
+  const [files, setFiles] = useState<File[]>([]); // datatype is array of files.
 
   const form = useForm<z.infer<typeof UserValidation>>({
-    resolver: zodResolver(UserValidation),
+    resolver: zodResolver(UserValidation),  // ZOD is used for schema validation. in lib/validation/user. 
     defaultValues: {
       profile_photo: user?.image ? user.image : "",
       name: user?.name ? user.name : "",
@@ -57,16 +56,16 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
   const onSubmit = async (values: z.infer<typeof UserValidation>) => {
     const blob = values.profile_photo;
 
-    const hasImageChanged = isBase64Image(blob);
+    const hasImageChanged = isBase64Image(blob); //comes from libs utils folder. 
     if (hasImageChanged) {
-      const imgRes = await startUpload(files);
+      const imgRes = await startUpload(files); // id image is change or uploaded by user
 
-      if (imgRes && imgRes[0].fileUrl) {
-        values.profile_photo = imgRes[0].fileUrl;
+      if (imgRes && imgRes[0].url) {
+        values.profile_photo = imgRes[0].url;
       }
     }
-
-    await updateUser({
+    // these are the params. 
+    await updateUser({  //In line 35 of user action below is not same order because in here we put them in object.
       name: values.name,
       path: pathname,
       username: values.username,
@@ -82,26 +81,28 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
     }
   };
 
+  // handleImage function allow use to upload profile photo from local machine.
   const handleImage = (
     e: ChangeEvent<HTMLInputElement>,
     fieldChange: (value: string) => void
   ) => {
-    e.preventDefault();
+    e.preventDefault(); //to prevent browser to reload. 
 
     const fileReader = new FileReader();
 
-    if (e.target.files && e.target.files.length > 0) {
+    if (e.target.files && e.target.files.length > 0) { //check if the files really exist 
       const file = e.target.files[0];
       setFiles(Array.from(e.target.files));
 
-      if (!file.type.includes("image")) return;
+      if (!file.type.includes("image"))
+        return;
 
       fileReader.onload = async (event) => {
         const imageDataUrl = event.target?.result?.toString() || "";
-        fieldChange(imageDataUrl);
+        fieldChange(imageDataUrl); //updates the field name
       };
 
-      fileReader.readAsDataURL(file);
+      fileReader.readAsDataURL(file); // this allow use to change the image.
     }
   };
 
@@ -118,16 +119,16 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
             <FormItem className='flex items-center gap-4'>
               <FormLabel className='account-form_image-label'>
                 {field.value ? (
-                  <Image
+                  <Image //only if profile photo is uploaded.
                     src={field.value}
                     alt='profile_icon'
                     width={96}
                     height={96}
-                    priority
+                    priority //can ensure that newly rendered images are given precedence in loading.
                     className='rounded-full object-contain'
                   />
                 ) : (
-                  <Image
+                  <Image  //default profile photo.
                     src='/assets/profile.svg'
                     alt='profile_icon'
                     width={24}
@@ -161,10 +162,10 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
                 <Input
                   type='text'
                   className='account-form_input no-focus'
-                  {...field}
+                  {...field} // speard operator used to pass props from an object like field. // It takes default values from form above line 49.
                 />
               </FormControl>
-              <FormMessage />
+              <FormMessage />  {/* # show error message   */}
             </FormItem>
           )}
         />

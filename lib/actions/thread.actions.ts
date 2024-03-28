@@ -1,4 +1,6 @@
-"use server";
+// this is used to update user data in the mongodb users.
+"use server"  // Indicates that this code is intended for server-side execution
+// used when we are actually fetch on server
 
 import { revalidatePath } from "next/cache";
 
@@ -8,6 +10,7 @@ import User from "../models/user.model";
 import Thread from "../models/thread.model";
 import Community from "../models/community.model";
 
+// use to fetch threads from mongodb
 export async function fetchPosts(pageNumber = 1, pageSize = 20) {
   connectToDB();
 
@@ -16,7 +19,7 @@ export async function fetchPosts(pageNumber = 1, pageSize = 20) {
 
   // Create a query to fetch the posts that have no parent (top-level threads) (a thread that is not a comment/reply).
   const postsQuery = Thread.find({ parentId: { $in: [null, undefined] } })
-    .sort({ createdAt: "desc" })
+    .sort({ createdAt: "desc" }) //desecding means newer one going to be first on the home page.
     .skip(skipAmount)
     .limit(pageSize)
     .populate({
@@ -39,7 +42,7 @@ export async function fetchPosts(pageNumber = 1, pageSize = 20) {
   // Count the total number of top-level posts (threads) i.e., threads that are not comments.
   const totalPostsCount = await Thread.countDocuments({
     parentId: { $in: [null, undefined] },
-  }); // Get the total count of posts
+  }); // Get the total count of posts .
 
   const posts = await postsQuery.exec();
 
@@ -55,6 +58,7 @@ interface Params {
   path: string,
 }
 
+//For creating thread.
 export async function createThread({ text, author, communityId, path }: Params
 ) {
   try {
@@ -65,7 +69,7 @@ export async function createThread({ text, author, communityId, path }: Params
       { _id: 1 }
     );
 
-    const createdThread = await Thread.create({
+    const createdThread = await Thread.create({ // this thread is mongoose mongodb model
       text,
       author,
       community: communityIdObject, // Assign communityId if provided, or leave it null for personal account
@@ -73,7 +77,7 @@ export async function createThread({ text, author, communityId, path }: Params
 
     // Update User model
     await User.findByIdAndUpdate(author, {
-      $push: { threads: createdThread._id },
+      $push: { threads: createdThread._id }, // pushing to the user who created the thread.
     });
 
     if (communityIdObject) {
@@ -100,6 +104,7 @@ async function fetchAllChildThreads(threadId: string): Promise<any[]> {
 
   return descendantThreads;
 }
+ 
 
 export async function deleteThread(id: string, path: string): Promise<void> {
   try {
@@ -151,28 +156,29 @@ export async function deleteThread(id: string, path: string): Promise<void> {
       { $pull: { threads: { $in: descendantThreadIds } } }
     );
 
-    revalidatePath(path);
+    revalidatePath(path); // so that changes happen immediately,
   } catch (error: any) {
     throw new Error(`Failed to delete thread: ${error.message}`);
   }
 }
 
+//to know on which thread for comments we are currently on. here we are implementing multi-level commenting.
 export async function fetchThreadById(threadId: string) {
   connectToDB();
-
+  // populate means filling it with
   try {
     const thread = await Thread.findById(threadId)
       .populate({
         path: "author",
         model: User,
-        select: "_id id name image",
+        select: "_id id name image",  // which field we want to get from author.
       }) // Populate the author field with _id and username
       .populate({
         path: "community",
         model: Community,
         select: "_id id name image",
       }) // Populate the community field with _id and name
-      .populate({
+      .populate({          //the children which we are populating are the comments.
         path: "children", // Populate the children field
         populate: [
           {
@@ -199,7 +205,7 @@ export async function fetchThreadById(threadId: string) {
     throw new Error("Unable to fetch thread");
   }
 }
-
+ // to add comments logic .
 export async function addCommentToThread(
   threadId: string,
   commentText: string,

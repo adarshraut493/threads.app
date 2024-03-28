@@ -32,7 +32,7 @@ function Bottombar() {
               />
 
               <p className='text-subtle-medium text-light-1 max-sm:hidden'>
-                {link.label.split(/\s+/)[0]}
+                {link.label.split(/\s+/)[0]}   { /*this will get us just the first word . instead of create thread we get only create in mobile.*/}
               </p>
             </Link>
           );

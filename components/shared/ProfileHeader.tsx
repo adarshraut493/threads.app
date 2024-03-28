@@ -13,7 +13,7 @@ interface Props {
 
 function ProfileHeader({
   accountId,
-  authUserId,
+  authUserId,//to check if currently loged in user is check other profile or there own profile.
   name,
   username,
   imgUrl,
@@ -38,7 +38,7 @@ function ProfileHeader({
               {name}
             </h2>
             <p className='text-base-medium text-gray-1'>@{username}</p>
-          </div>
+          </div>                                     {/*rendering username*/}
         </div>
         {accountId === authUserId && type !== "Community" && (
           <Link href='/profile/edit'>

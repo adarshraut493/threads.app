@@ -1,8 +1,8 @@
+//for activity for notification.
 import Image from "next/image";
 import Link from "next/link";
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
-
 import { fetchUser, getActivity } from "@/lib/actions/user.actions";
 
 async function Page() {
@@ -31,6 +31,7 @@ async function Page() {
                     height={20}
                     className='rounded-full object-cover'
                   />
+                  {/* Displaying who has replied to you comment or thread . */}
                   <p className='!text-small-regular text-light-1'>
                     <span className='mr-1 text-primary-500'>
                       {activity.author.name}

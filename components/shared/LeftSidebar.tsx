@@ -4,11 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { SignOutButton, SignedIn, useAuth } from "@clerk/nextjs";
-
 import { sidebarLinks } from "@/constants";
 
 const LeftSidebar = () => {
-  const router = useRouter();
+  const router = useRouter(); //to know the current url we are on . 
   const pathname = usePathname();
 
   const { userId } = useAuth();
@@ -16,12 +15,12 @@ const LeftSidebar = () => {
   return (
     <section className='custom-scrollbar leftsidebar'>
       <div className='flex w-full flex-1 flex-col gap-6 px-6'>
-        {sidebarLinks.map((link) => {
+        {sidebarLinks.map((link) => {  // these links are comming form constants .
           const isActive =
-            (pathname.includes(link.route) && link.route.length > 1) ||
+             (pathname.includes(link.route) && link.route.length > 1) || //  It checks if the pathname (current URL path) and if the length of link. 
             pathname === link.route;
 
-          if (link.route === "/profile") link.route = `${link.route}/${userId}`;
+          if (link.route === "/profile") link.route = `${link.route}/${userId}`; //"/profile" to "/profile/123".
 
           return (
             <Link

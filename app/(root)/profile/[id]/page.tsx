@@ -1,3 +1,4 @@
+//for profile page.
 import Image from "next/image";
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
@@ -7,7 +8,6 @@ import { profileTabs } from "@/constants";
 import ThreadsTab from "@/components/shared/ThreadsTab";
 import ProfileHeader from "@/components/shared/ProfileHeader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
 import { fetchUser } from "@/lib/actions/user.actions";
 
 async function Page({ params }: { params: { id: string } }) {
@@ -28,6 +28,8 @@ async function Page({ params }: { params: { id: string } }) {
         bio={userInfo.bio}
       />
 
+
+      {/* these tabs are taken from shadcn.*/}
       <div className='mt-9'>
         <Tabs defaultValue='threads' className='w-full'>
           <TabsList className='tab'>
@@ -49,6 +51,8 @@ async function Page({ params }: { params: { id: string } }) {
                 )}
               </TabsTrigger>
             ))}
+
+            {/*to count no of thread in a tab and display them*/}
           </TabsList>
           {profileTabs.map((tab) => (
             <TabsContent
@@ -56,8 +60,7 @@ async function Page({ params }: { params: { id: string } }) {
               value={tab.value}
               className='w-full text-light-1'
             >
-              {/* @ts-ignore */}
-              <ThreadsTab
+              <ThreadsTab     //coming form components shared threadstab.
                 currentUserId={user.id}
                 accountId={userInfo.id}
                 accountType='User'

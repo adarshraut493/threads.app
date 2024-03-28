@@ -1,11 +1,11 @@
+// for comments .
 "use client";
 
-import { z } from "zod";
+import { z } from "zod";  // for validation.
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { usePathname } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import {
   Form,
   FormControl,
@@ -13,10 +13,8 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
-
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-
 import { CommentValidation } from "@/lib/validations/thread";
 import { addCommentToThread } from "@/lib/actions/thread.actions";
 
@@ -25,7 +23,7 @@ interface Props {
   currentUserImg: string;
   currentUserId: string;
 }
-
+// the things which we are pass as props below should always we need to defind above.
 function Comment({ threadId, currentUserImg, currentUserId }: Props) {
   const pathname = usePathname();
 
@@ -40,11 +38,11 @@ function Comment({ threadId, currentUserImg, currentUserId }: Props) {
     await addCommentToThread(
       threadId,
       values.thread,
-      JSON.parse(currentUserId),
+      JSON.parse(currentUserId), 
       pathname
     );
 
-    form.reset();
+    form.reset(); // for if we want to add another comment 
   };
 
   return (
@@ -57,7 +55,7 @@ function Comment({ threadId, currentUserImg, currentUserId }: Props) {
             <FormItem className='flex w-full items-center gap-3'>
               <FormLabel>
                 <Image
-                  src={currentUserImg}
+                  src={currentUserImg} //comming from clerk which is email id profile photo.
                   alt='current_user'
                   width={48}
                   height={48}

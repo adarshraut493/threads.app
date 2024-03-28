@@ -1,13 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  typescript:{
-       ignoreBuildErrors: true,
+  typescript: {
+    ignoreBuildErrors: true,
   },
   experimental: {
     serverActions: true,
     serverComponentsExternalPackages: ["mongoose"],
   },
-
+  // to allow images clerk like default profile image.
   images: {
     remotePatterns: [
       {
@@ -27,7 +27,7 @@ const nextConfig = {
         hostname: "placehold.co",
       },
     ],
-    
+
   },
 };
 module.exports = nextConfig;

@@ -1,4 +1,5 @@
-"use client";
+// it is a kind for from from where user will write and upload it .
+"use client"
 
 import * as z from "zod";
 import { useForm } from "react-hook-form";
@@ -16,7 +17,6 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-
 import { ThreadValidation } from "@/lib/validations/thread";
 import { createThread } from "@/lib/actions/thread.actions";
 
@@ -37,13 +37,13 @@ function PostThread({ userId }: Props) {
       accountId: userId,
     },
   });
-
+  // this is react hook form.
   const onSubmit = async (values: z.infer<typeof ThreadValidation>) => {
     await createThread({
       text: values.thread,
       author: userId,
       communityId: organization ? organization.id : null,
-      path: pathname,
+      path: pathname, 
     });
 
     router.push("/");

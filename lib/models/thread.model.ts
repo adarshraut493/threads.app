@@ -1,3 +1,4 @@
+//this is used for how the data will be saved in mongoDB thread.
 import mongoose from "mongoose";
 
 const threadSchema = new mongoose.Schema({
@@ -24,7 +25,7 @@ const threadSchema = new mongoose.Schema({
   children: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Thread",
+      ref: "Thread",  // threads can have multiple threads as children. we are doing recurrsion.
     },
   ],
 });

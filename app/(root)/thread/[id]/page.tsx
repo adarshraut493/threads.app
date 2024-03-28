@@ -1,3 +1,4 @@
+// this  is for the replies of thread called as comments
 import { redirect } from "next/navigation";
 import { currentUser } from "@clerk/nextjs";
 
@@ -18,13 +19,13 @@ async function page({ params }: { params: { id: string } }) {
   const userInfo = await fetchUser(user.id);
   if (!userInfo?.onboarded) redirect("/onboarding");
 
-  const thread = await fetchThreadById(params.id);
+  const thread = await fetchThreadById(params.id); // to know on which thread we are currently on.
 
   return (
     <section className='relative'>
-      <div>
+      <div>   {/* the  data which is comming from fetchThreadById we are passing it to below thread card. */}
         <ThreadCard
-          id={thread._id}
+          id={thread._id}  // this thread is comming form line 22 function fetchThreadById
           currentUserId={user.id}
           parentId={thread.parentId}
           content={thread.text}
@@ -35,6 +36,7 @@ async function page({ params }: { params: { id: string } }) {
         />
       </div>
 
+      {/* For printing comment in threads. */}
       <div className='mt-7'>
         <Comment
           threadId={params.id}
