@@ -11,7 +11,7 @@ async function Page() {
   const userInfo = await fetchUser(user.id);
   if (userInfo?.onboarded) redirect("/");
 
-  const userData = {  //this come form database
+  const userData = {  //this come form database 
     id: user.id,
     objectId: userInfo?._id, //"?" to check wether it exists.
     username: userInfo ? userInfo?.username : user.username, //these are the props.
