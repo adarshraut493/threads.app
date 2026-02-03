@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+
 import { usePathname, useRouter } from "next/navigation";
 import { SignOutButton, SignedIn, useAuth } from "@clerk/nextjs";
 import { sidebarLinks } from "@/constants";
@@ -17,7 +18,7 @@ const LeftSidebar = () => {
       <div className='flex w-full flex-1 flex-col gap-6 px-6'>
         {sidebarLinks.map((link) => {  // these links are comming form constants .
           const isActive =
-             (pathname.includes(link.route) && link.route.length > 1) || //  It checks if the pathname (current URL path) and if the length of link. 
+            (pathname.includes(link.route) && link.route.length > 1) || //  It checks if the pathname (current URL path) and if the length of link. 
             pathname === link.route;
 
           if (link.route === "/profile") link.route = `${link.route}/${userId}`; //"/profile" to "/profile/123".

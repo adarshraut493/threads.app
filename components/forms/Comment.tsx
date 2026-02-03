@@ -35,10 +35,11 @@ function Comment({ threadId, currentUserImg, currentUserId }: Props) {
   });
 
   const onSubmit = async (values: z.infer<typeof CommentValidation>) => {
+    // Calls addCommentToThread to add the comment to the specified thread. This function takes four arguments:
     await addCommentToThread(
       threadId,
       values.thread,
-      JSON.parse(currentUserId), 
+      JSON.parse(currentUserId),
       pathname
     );
 

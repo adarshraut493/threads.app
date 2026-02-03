@@ -22,6 +22,7 @@ async function Home({
   const result = await fetchPosts(
     searchParams.page ? +searchParams.page : 1,
     30
+    // 30 specifies that 30 posts should be fetched per page.
   );
 
   return (

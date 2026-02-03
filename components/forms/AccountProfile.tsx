@@ -44,7 +44,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
   const [files, setFiles] = useState<File[]>([]); // datatype is array of files.
 
   const form = useForm<z.infer<typeof UserValidation>>({
-    resolver: zodResolver(UserValidation),  // ZOD is used for schema validation. in lib/validation/user. 
+    resolver: zodResolver(UserValidation),  // ZOD is used typscript for schema validation. in lib/validation/user. 
     defaultValues: {
       profile_photo: user?.image ? user.image : "",
       name: user?.name ? user.name : "",
@@ -52,7 +52,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
       bio: user?.bio ? user.bio : "",
     },
   });
-
+  // From website
   const onSubmit = async (values: z.infer<typeof UserValidation>) => {
     const blob = values.profile_photo;
 
@@ -107,6 +107,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
   };
 
   return (
+    // from website
     <Form {...form}>
       <form
         className='flex flex-col justify-start gap-10'

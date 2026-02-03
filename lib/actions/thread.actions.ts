@@ -25,7 +25,7 @@ export async function fetchPosts(pageNumber = 1, pageSize = 20) {
     .populate({
       path: "author",
       model: User,
-    })
+    }) 
     .populate({
       path: "community",
       model: Community,
@@ -104,7 +104,7 @@ async function fetchAllChildThreads(threadId: string): Promise<any[]> {
 
   return descendantThreads;
 }
- 
+
 
 export async function deleteThread(id: string, path: string): Promise<void> {
   try {
@@ -167,6 +167,8 @@ export async function fetchThreadById(threadId: string) {
   connectToDB();
   // populate means filling it with
   try {
+    // .populate({ path: "author", model: User, select: "_id id name image" }): This populates the author field in the thread with details from the User model. Only selected fields (_id, id, name, image) of the author are fetched.
+// 
     const thread = await Thread.findById(threadId)
       .populate({
         path: "author",
@@ -205,7 +207,7 @@ export async function fetchThreadById(threadId: string) {
     throw new Error("Unable to fetch thread");
   }
 }
- // to add comments logic .
+// to add comments logic .
 export async function addCommentToThread(
   threadId: string,
   commentText: string,

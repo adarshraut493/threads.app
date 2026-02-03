@@ -15,11 +15,10 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode; //type
 }) {
   return (
-    <ClerkProvider
-    >
+    <ClerkProvider>
       <html lang='en'>
         <body className={`${inter.className} bg-dark-1`}>
           <div className="w-full flex justify-center items-center min-h-screen">
