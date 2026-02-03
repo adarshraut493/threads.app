@@ -2,6 +2,8 @@ import React from "react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
 
 import "../globals.css";
 import LeftSidebar from "@/components/shared/LeftSidebar";
@@ -16,11 +18,14 @@ export const metadata: Metadata = {
   description: "A Next.js 13 Meta Threads application",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const user = await currentUser();
+  if (!user) redirect('/sign-in');
+
   return (
     <ClerkProvider>
       <html lang='en'>
