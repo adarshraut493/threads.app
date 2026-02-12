@@ -2,7 +2,6 @@
 const nextConfig = {
 
   experimental: {
-    serverActions: true,
     serverComponentsExternalPackages: ["mongoose"],
   },
   // to allow images clerk like default profile image.
